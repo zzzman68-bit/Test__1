@@ -420,6 +420,7 @@ int input_10_LineTransparency = input.int(title='Style: Transparency', group='Fi
 string input_10_LineStyle = input.string(title='Style: Type', group='Field 10', defval='Line', options=['Line', 'Stepline', 'Step Line With Diamonds', 'Circles'])
 
 
+color input_4_color = input(title='Style: Color', group='Field 4', defval=val_4_color_default)
 eham25 Color val_9_color_default = #82FFC9
 ehma50 Color val_9_color_default = #82FFC9
 tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
@@ -459,8 +460,10 @@ tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLeng
 dema134  color val_9_color_default = #82FFC9
 tema226  color val_9_color_default = #82FFC9
 Hull Keltner "lower 1" ___ *+05*  color val_9_color_default = #82FFC9
+color input_4_color = input(title='Style: Color', group='Field 4', defval=val_4_color_default)
 Hull Keltner "SHULL"  ____ *+05*  color val_9_color_default = #82FFC9
 Hull Keltner "SHULL" ___ T.MIN  (BAR 2 AND BAR 6 ) color val_9_color_default = #82FFC9
+color=color.new(input_10_color, input_10_LineTransparency), linewidth=input_10_LineWidth, style=_funcLineStyle(input_10_LineStyle))
 T.MIN __L3 Upper Outer   color val_9_color_default = #82FFC9
 ema21 __L3 Upper Outer   color val_9_color_default = #82FFC9
 ehma50  __L3 Upper Outer  color val_9_color_default = #82FFC9
@@ -512,6 +515,7 @@ string input_2_LineStyle = input.string(title='Style: Type', group='Field 2', de
 tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
 ema34  color val_9_color_default = #82FFC9
 ema21  color val_9_color_default = #82FFC9
+color input_4_color = input(title='Style: Color', group='Field 4', defval=val_4_color_default)
 tema226  2d, 3d  color val_9_color_default = #82FFC9
 color input_8_color = input(title='Style: Color', group='Field 8', defval=val_8_color_default)
 
@@ -539,9 +543,11 @@ string input_4_LineStyle = input.string(title='Style: Type', group='Field 4', de
 tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
 EHMA25  __T.MIN (BAR 6 )   color val_9_color_default = #82FFC9
 EHMA50  __T.MIN  color val_9_color_default = #82FFC9
+string input_8_MaType = input.string(title='Type', group='Field 8', defval='DISABLED', options=['DISABLED', 'COVWMA', 'DEMA', 'EMA',
 sma10   color val_9_color_default = #82FFC9
 sma100  2d, 3d color val_9_color_default = #82FFC9
 color input_8_color = input(title='Style: Color', group='Field 8', defval=val_8_color_default)
+color=color.new(input_10_color, input_10_LineTransparency), linewidth=input_10_LineWidth, style=_funcLineStyle(input_10_LineStyle))
 
 // Field 5
 input_5_Timeframe = input.timeframe("", "Resolution:", group="Field 5")
@@ -563,6 +569,12 @@ int input_6_LineWidth = input.int(title='Style: Size', group='Field 6', minval=1
 int input_6_LineTransparency = input.int(title='Style: Transparency', group='Field 6', minval=0, maxval=100, defval=0, step=5)
 string input_6_LineStyle = input.string(title='Style: Type', group='Field 6', defval='Line', options=['Line', 'Stepline', 'Step Line With Diamonds', 'Circles'])
 
+string input_8_MaType = input.string(title='Type', group='Field 8', defval='DISABLED', options=['DISABLED', 'COVWMA', 'DEMA', 'EMA',
+tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
+HMA100 __t.min (Price__T.max)  re-en val_9_color_default = #82FFC9
+HMA100 __ema34 (Price__T.max)  re-en val_9_color_default = #82FFC9
+tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
+
 // Field 7
 input_7_Timeframe = input.timeframe("", "Resolution:", group="Field 7")
 input_7_Source = input(title='Source', group='Field 7', defval=close)
@@ -583,7 +595,7 @@ int input_8_LineWidth = input.int(title='Style: Size', group='Field 8', minval=1
 int input_8_LineTransparency = input.int(title='Style: Transparency', group='Field 8', minval=0, maxval=100, defval=0, step=5)
 string input_8_LineStyle = input.string(title='Style: Type', group='Field 8', defval='Line', options=['Line', 'Stepline', 'Step Line With Diamonds', 'Circles'])
 
-
+string input_8_MaType = input.string(title='Type', group='Field 8', defval='DISABLED', options=['DISABLED', 'COVWMA', 'DEMA', 'EMA',
 tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
 Hma100 __ ema21 color val_9_color_default = #82FFC9
 emhma50 __sma10 color val_9_color_default = #82FFC9
@@ -591,6 +603,7 @@ chadelier exit  color val_9_color_default = #82FFC9
 T3 Entry and Exit by stocktrader15 color val_9_color_default = #82FFC9
 B-Min __-0.618r1  val_9_color_default = #82FFC9
 color input_8_color = input(title='Style: Color', group='Field 8', defval=val_8_color_default)
+color=color.new(input_10_color, input_10_LineTransparency), linewidth=input_10_LineWidth, style=_funcLineStyle(input_10_LineStyle))
 
 // Field 9
 input_9_Timeframe = input.timeframe("", "Resolution:", group="Field 9")
@@ -624,7 +637,7 @@ string input_10_LineStyle = input.string(title='Style: Type', group='Field 10', 
  +1r10__upper6, (MA100__MA200), sma100 __t226 color val_9_color_default = #82FFC9
 color input_7_color = input(title='Style: Color', group='Field 7', defval=val_7_color_default)
 tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
-
+string input_8_MaType = input.string(title='Type', group='Field 8', defval='DISABLED', options=['DISABLED', 'COVWMA', 'DEMA', 'EMA',
 
 // Field 11
 input_11_Timeframe = input.timeframe("", "Resolution:", group="Field 9")
@@ -640,6 +653,7 @@ string input_11_LineStyle = input.string(title='Style: Type', group='Field 9', d
  (_funcCalcMA(valFinal_10_MaType, input_10_Source, input_10_Timeframe, valFinal_10_MaLength), title='MA 10', color=color.new(input_10_color, 
 ema27 __Upper5 wk color val_9_color_default = #82FFC9
 ema30 __Upper5 wk color val_9_color_default = #82FFC9
+string input_8_MaType = input.string(title='Type', group='Field 8', defval='DISABLED', options=['DISABLED', 'COVWMA', 'DEMA', 'EMA',
 ema34 __Upper5 wk,d,  color val_9_color_default = #82FFC9
 ehma50 __t.min) (price surf__MA10 wk val_9_color_default = #82FFC9
 color input_7_color = input(title='Style: Color', group='Field 7', defval=val_7_color_default)
