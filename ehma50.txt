@@ -572,6 +572,8 @@ string input_6_LineStyle = input.string(title='Style: Type', group='Field 6', de
 string input_8_MaType = input.string(title='Type', group='Field 8', defval='DISABLED', options=['DISABLED', 'COVWMA', 'DEMA', 'EMA',
 tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
 HMA100 __t.min (Price__T.max)  re-en val_9_color_default = #82FFC9
+HMA200 __t.min (Price__T.max)  re-en val_9_color_default = #82FFC9
+HMA200 __HMA100 (Price__T.max)  re-en val_9_color_default = #82FFC9
 HMA100 __ema34 (Price__T.max)  re-en val_9_color_default = #82FFC9
 tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLength)
 
@@ -671,5 +673,4 @@ tpl_type5_1_MaLength, tpl_type6_1_MaLength, tpl_type7_1_MaLength, input_1_MaLeng
 [valFinal_8_MaType, valFinal_8_MaLength] = _funcSetFinalVal(inputTemplate, tpl_type1_8_MaType, tpl_type2_8_MaType, tpl_type3_8_MaType, tpl_type4_8_MaType, tpl_type5_8_MaType, tpl_type6_8_MaType, tpl_type7_8_MaType, input_8_MaType, tpl_type1_8_MaLength, tpl_type2_8_MaLength, tpl_type3_8_MaLength, tpl_type4_8_MaLength, tpl_type5_8_MaLength, tpl_type6_8_MaLength, tpl_type7_8_MaLength, input_8_MaLength)
 [valFinal_9_MaType, valFinal_9_MaLength] = _funcSetFinalVal(inputTemplate, tpl_type1_9_MaType, tpl_type2_9_MaType, tpl_type3_9_MaType, tpl_type4_9_MaType, tpl_type5_9_MaType, tpl_type6_9_MaType, tpl_type7_9_MaType, input_9_MaType, tpl_type1_9_MaLength, tpl_type2_9_MaLength, tpl_type3_9_MaLength, tpl_type4_9_MaLength, tpl_type5_9_MaLength, tpl_type6_9_MaLength, tpl_type7_9_MaLength, input_9_MaLength)
 [valFinal_10_MaType, valFinal_10_MaLength] = _funcSetFinalVal(inputTemplate, tpl_type1_10_MaType, tpl_type2_10_MaType, tpl_type3_10_MaType, tpl_type4_10_MaType, tpl_type5_10_MaType, tpl_type6_10_MaType, tpl_type7_10_MaType, input_10_MaType, tpl_type1_10_MaLength, tpl_type2_10_MaLength, tpl_type3_10_MaLength, tpl_type4_10_MaLength, tpl_type5_10_MaLength, tpl_type6_10_MaLength, tpl_type7_10_MaLength, input_10_MaLength)
-
 
