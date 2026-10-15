@@ -1,0 +1,19 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © Spectrum101
+
+//@version=4
+study("Bulls vs Breas Ratio")
+
+total_candles = input(100)
+
+red_body = close<open?abs(high-low):0
+green_body = close>open?abs(high-low):0
+
+total_red = sum(red_body,total_candles)/total_candles
+total_green = sum(green_body,total_candles)/total_candles
+
+plot(total_green/total_red-1,color=total_green>total_red?color.green:color.red)
+plot(sma(total_green/total_red-1,total_candles*2),color=color.blue)
+plot(sma(total_green/total_red-1,total_candles/2),color=color.black)
+
+hline(0)
