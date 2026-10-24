@@ -1,0 +1,24 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © alexgrover
+
+//@version=4
+study("Windowed Volume Weighted Moving Average: Length 35",overlay=true)
+length = input(35),src = input(close),power = input(1.)
+window = input("Bartlett",options=["Bartlett","Blackman","Hanning","None"])
+//----
+pi = 3.14159
+a(x) => 1 - 2*abs(x - length/2)/length
+b(x) => 0.42 - 0.5 * cos(2 * pi * (x/length)) + 0.08 * cos(4 * pi * (x/length))
+c(x) => 0.5 - 0.5 * cos(2 * pi * x/length)
+//----
+f(x,y,z) => window == x ? y : z
+win(x) => f("Bartlett",a(x),f("Blackman",b(x),f("Hanning",c(x),1)))
+//----
+sumw = 0.,sum = 0.
+for i = 0 to length-1
+    w = pow(volume[i],power)*win(i)
+    sumw := sumw + w 
+    sum := sum + src[i]*w
+wvwma = sum/sumw
+//----
+plot(wvwma,"Output",#ff1100,2,transp=0)
