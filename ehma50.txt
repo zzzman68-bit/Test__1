@@ -2,7 +2,7 @@
 // 
 
 //@version=5
-indicator('Multi MA (COVWMA, DEMA, EMA, EHMA, FRAMA, HMA, KAMA, RMA, SMA, TEMA, SMMA (RMA), VIDYA, VWMA, WMA)', shorttitle='H ', overlay=true)
+indicator('Multi MA ', shorttitle='(MA-EWMA) with Channels by NotLazyBear', overlay=true)
 
 
 
