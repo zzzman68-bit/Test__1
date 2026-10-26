@@ -1,0 +1,33 @@
+//@version=1
+study(title="DP: EMA 5/10/20/50/150/250/400", overlay=true)
+
+EMA5 = ema(close, 5)
+EMA10 = ema(close, 10)
+EMA20 = ema(close, 20)
+EMA50 = ema(close, 50)
+EMA150 = ema(close, 150)
+EMA250 = ema(close, 250)
+EMA400 = ema(close, 400)
+
+plot(EMA5, color = red, title="EMA5", linewidth = 2)
+plot(EMA10, color = blue, title="EMA10", linewidth = 2)
+plot(EMA20, color = #FFD700, title="EMA20", linewidth = 2)
+plot(EMA50, color = green, title="EMA50", linewidth = 2) 
+plot(EMA150, color = purple, title="EMA150", linewidth = 2)
+plot(EMA250, color = fuchsia, title="EMA250", linewidth = 2)
+plot(EMA400, color = orange, title="EMA400", linewidth = 2)
+
+length = input(title="Length", type=integer, defval=20, minval=0) 
+bband(length, mult) =>
+	sma(close, length) + mult * stdev(close, length)
+keltner(length, mult) =>
+	ema(close, length) + mult * ema(tr, length)
+
+e1 = (highest(high, length) + lowest(low, length)) / 2 + sma(close, length)
+osc = linreg(close - e1 / 2, length, 0)
+diff = bband(length, 2) - keltner(length, 1)
+osc_color = osc[1] < osc[0] ? osc[0] >= 0 ? #00ffff : #cc00cc : osc[0] >= 0 ? #009b9b : #ff9bff
+mid_color = diff >= 0 ? green : red
+
+plot(osc, color=osc_color, style=histogram, linewidth=2)
+plot(0, color=mid_color, style=circles, linewidth=3)
