@@ -1,0 +1,11 @@
+study(title="SMA 50-100-150", shorttitle="SMA 50-100-150", overlay=true)
+
+length1=input( 50,minval=1,title="SMA 50  Length")
+length2=input(100,minval=1,title="SMA 100 Length")
+length3=input(150,minval=1,title="SMA 150 Length")
+sma1=sma(close,length1)
+sma2=sma(close,length2)
+sma3=sma(close,length3)
+plot(sma1,color=red,linewidth=2)
+plot(sma2,color=yellow,linewidth=2)
+plot(sma3,color=green,linewidth=2)

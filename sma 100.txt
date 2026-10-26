@@ -1,0 +1,189 @@
+//@version=4
+// @ SpiffyRumble
+study(title="EMA SMA 100 Cross", overlay=true, max_labels_count=500)
+
+
+// === INPUTS ===
+fastSource = input(defval=close, title="Fast Source")
+fastLength = input(defval=3, title="Fast Period", minval=1)
+medFastSource = input(defval=close, title="Med Fast Source")
+medFastLength = input(defval=20, title="Med Fast Period", minval=1)
+mediumSource = input(defval=close, title="Medium Source")
+mediumLength = input(defval=50, title="Medium Period", minval=1)
+maExpSource = input(defval=close, title="EMA Source")
+maExpLength = input(defval=100, title="EMA Period", minval=1)
+maSimpSource = input(defval=close, title="SMA Source")
+maSimpLength = input(defval=100, title="SMA Period", minval=1)
+slowSource = input(defval=close, title="Slow Source")
+slowLength = input(defval=200, title="Slow Period", minval=1)
+
+// === FUNCTIONS ===
+maExp = ema(maExpSource, maExpLength)
+maSimp = sma(maSimpSource, maSimpLength)
+fastSma = sma(fastSource, fastLength)
+medFastSma = sma(medFastSource, medFastLength)
+mediumSma = sma(mediumSource, mediumLength)
+slowSma = sma(slowSource, slowLength)
+bullishCross = crossover(maExp, maSimp)
+bullCross = crossover(fastSma, mediumSma)
+bearishCross = crossunder(fastSma, mediumSma)
+bullishCrossFast = crossover(fastSma, medFastSma)
+bearishCrossFast = crossunder(fastSma, medFastSma)
+fastBullCross = crossover(fastSma, slowSma)
+fastBearCross = crossunder(fastSma, slowSma)
+medBullCross = crossover(medFastSma, mediumSma)
+expBullCross = crossover(fastSma, maExp)
+simpBullCross = crossover(fastSma, maSimp)
+
+
+// === PLOTTING ===
+faSma = plot(fastSma, title="3 SMA", color=color.new(color.red, 0), linewidth=1, style=plot.style_line)
+medFaSma = plot(medFastSma, title="20 SMA", color=color.new(color.orange, 0), linewidth=1, style=plot.style_line)
+medSma = plot(mediumSma, title="50 SMA", color=color.new(color.yellow, 0), linewidth=1, style=plot.style_line)
+ema = plot(maExp, title="100 EMA", color=color.new(color.green, 0), linewidth=1, style=plot.style_line)
+sma = plot(maSimp, title="100 SMA", color=color.new(color.blue, 0), linewidth=1, style=plot.style_line)
+slSma = plot(slowSma, title="200 SMA", color=color.new(color.purple, 0), linewidth=3, style=plot.style_line)
+
+
+
+// === LABELS ===
+var longLabel = label.new(x=na, y=na, yloc=yloc.abovebar,
+     color=color.green, textcolor=color.new(color.white, 0),
+     size=size.normal, style=label.style_labeldown)
+
+var shortLabel = label.new(x=na, y=na, yloc=yloc.belowbar,
+     color=color.red, textcolor=color.new(color.white, 0),
+     size=size.normal, style=label.style_labelup)
+
+var profitLabelLong = label.new(x=na, y=na, yloc=yloc.abovebar,
+     color=color.blue, textcolor=color.new(color.white, 0),
+     size=size.normal, style=label.style_labeldown)
+    
+var profitLabelShort = label.new(x=na, y=na, yloc=yloc.belowbar,
+     color=color.blue, textcolor=color.new(color.white, 0),
+     size=size.normal, style=label.style_labelup)
+
+
+
+// Make a label for Bullish signal
+
+if simpBullCross and fastSma>medFastSma and fastSma>mediumSma and fastSma>maExp and fastSma>slowSma
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if expBullCross and fastSma>medFastSma and fastSma>mediumSma and fastSma>maSimp and fastSma>slowSma
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if bullCross and fastSma>medFastSma and fastSma>maExp and fastSma>maSimp and fastSma>slowSma
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if bullishCrossFast and fastSma>mediumSma and fastSma>maExp and fastSma>maSimp and fastSma>slowSma
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if bullishCross and fastSma>slowSma and fastSma>medFastSma
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if bullishCrossFast and fastSma>slowSma and medFastSma>slowSma and medFastSma>mediumSma and maExp>maSimp
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na,yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if fastBullCross
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na,yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if medBullCross and fastSma>medFastSma and maExp>maSimp and maSimp>slowSma
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na,yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+if bullishCrossFast and slowSma>maSimp and slowSma>maExp and maExp>mediumSma
+
+    // Make label
+    longLabel := label.new(x=bar_index, y=na,yloc=yloc.belowbar,
+         style=label.style_labelup, color=color.new(color.green, 0),
+         text="Buy", textcolor=color.white)
+
+
+// Make a label for Bearish signal
+
+if bearishCross and maSimp>slowSma and maExp>slowSma and mediumSma>maSimp and mediumSma>maExp and medFastSma<mediumSma
+
+    // Make label
+    shortLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.red, 0),
+         text="Sell", textcolor=color.white)
+
+if bearishCrossFast and medFastSma>mediumSma and fastSma>slowSma
+
+    // Make label
+    shortLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.red, 0),
+         text="Sell", textcolor=color.white)
+
+if fastBearCross
+
+    // Make label
+    shortLabel := label.new(x=bar_index, y=na, yloc=yloc.abovebar,
+         style=label.style_labeldown, color=color.new(color.red, 0),
+         text="Sell", textcolor=color.white)
+
+if bearishCrossFast and slowSma>maSimp and slowSma>maExp and maExp>mediumSma and mediumSma>medFastSma
+
+    // Make label
+    shortLabel := label.new(x=bar_index, y=na, yloc=yloc.belowbar,
+         style=label.style_labelup, color=color.new(color.red, 0),
+         text="Sell", textcolor=color.white)
+
+if bearishCrossFast and slowSma>maSimp and slowSma>maExp and slowSma>mediumSma and slowSma>medFastSma and slowSma>fastSma
+
+    // Make label
+    shortLabel := label.new(x=bar_index, y=na, yloc=yloc.belowbar,
+         style=label.style_labelup, color=color.new(color.red, 0),
+         text="Sell", textcolor=color.white)
+
+
+// Make a label for long and short profit
+leftbars = input(10, minval=1, title='Bars to the left')
+rightbars = input(2, minval=1, title='Bars to the right')
+
+phigh = pivothigh(high, leftbars,rightbars)
+plow = pivotlow(low, leftbars, rightbars)
+
+if phigh and fastSma>medFastSma and medFastSma>mediumSma and maExp>maSimp and fastSma>slowSma
+    label1 = label.new(bar_index[rightbars], high[rightbars], text="Take\nProfit", style=label.style_labeldown, color=color.blue, textcolor=color.white)
+
+
+// === FILL ==== \\
+fill(faSma, medFaSma, color=fastSma > medFastSma ? color.new(color.red , 60) : color.new(color.gray, 60))
+fill(medFaSma, medSma, color=medFastSma > mediumSma ? color.new(color.yellow, 60) : color.new(color.gray, 60))
+fill(medSma, ema, color=mediumSma > maExp ? color.new(color.green , 60) : color.new(color.gray , 60))
+fill(ema, sma, color=maExp > maSimp ? color.new(color.blue, 60) : color.new(color.gray, 60))
+fill(sma, slSma, color=maSimp > slowSma ? color.new(color.purple, 60) : color.new(color.gray, 60))
+
