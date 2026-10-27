@@ -1,0 +1,18 @@
+//study(title="EMA Difference", shorttitle="EMAD")
+study("EMA", overlay=true)
+//sym = input(title="Symbol", type=symbol, defval="BINANCE:BTCUSDT", confirm=true)
+src = input(close, title="Source")
+
+price = security(tickerid, period, src)
+price_sma100 = sma(price, 100)
+price_ema9 = ema(price, 9)
+price_sma50 = sma(price, 50)
+price_sma200 = sma(price, 200)
+price_ema20 = ema(price, 20)
+plot(series=price_ema9, style=line, color=orange, linewidth=1, transp=0)
+plot(series=price_ema20, style=line, color=blue, linewidth=1, transp=0)
+plot(series=price_sma50, style=line, color=black, linewidth=1, transp=0)
+plot(series=price_sma100, style=line, color=purple, linewidth=1, transp=0)
+plot(series=price_sma200, style=line, color=red, linewidth=1, transp=0)
+
+

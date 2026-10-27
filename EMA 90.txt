@@ -1,0 +1,21 @@
+study(title="Fractal + MA 100 EMA 9/30/50/100/200", overlay=true)
+
+ma100 = sma(close, 100) 
+ema9 = ema(close, 9)
+ema30 = ema(close, 30)
+ema50 = ema(close, 50)
+ema100 = ema(close, 100)
+ema200 = ema(close, 200)
+
+plot(ma100, color=green, style=line, title="MA100", linewidth=1)
+plot(ema9, color=white, style=line, title="EMA9", linewidth=1)
+plot(ema30, color=red, style=line, title="EMA30", linewidth=1)
+plot(ema50, color=orange, style=line, title="EMA50", linewidth=1)
+plot(ema100, color=aqua, style=line, title="EMA100", linewidth=1)
+plot(ema200, color=blue, style=line, title="EMA200", linewidth=1)
+
+n = input(title="Periods", defval=2, minval=2, type=integer)
+dnFractal = (high[n-2] < high[n]) and (high[n-1] < high[n]) and (high[n+1] < high[n]) and (high[n+2] < high[n])
+upFractal = (low[n-2] > low[n]) and (low[n-1] > low[n]) and (low[n+1] > low[n]) and (low[n+2] > low[n])
+plotshape(dnFractal, style=shape.triangleup, location=location.abovebar, offset=-2, color=olive, transp=0) // Down Arrow above candles
+plotshape(upFractal, style=shape.triangledown, location=location.belowbar, offset=-2, color=maroon, transp=0)  // Up Arrow below candles

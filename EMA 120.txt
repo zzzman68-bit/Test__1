@@ -1,0 +1,30 @@
+// Add EMA 50, 100 and 200
+study(title="EMA 50, 100 and 200", shorttitle="Ema", overlay=true)
+
+//ema 50
+ema55Source = input(defval = close)
+ema55Length = input(defval = 50, minval = 1)
+
+//longest ema 100
+ema100Source = input(defval = close)
+ema100Length = input(defval = 100, minval = 1)
+
+// far longest ema 200
+ema200Source = input(defval = close)
+ema200Length = input(defval = 200, minval = 1)
+
+//Declare EMA
+ema55 = ema(ema55Source, ema55Length)
+ema100 = ema(ema100Source, ema100Length)
+ema200 = ema(ema200Source, ema200Length)
+
+//Draw lines
+plot(series=ema55, title="ema55", color = yellow, linewidth=1)
+plot(series=ema100, title="ema100", color = green, linewidth=1)
+plot(series=ema200, title="ema200", color = red, linewidth=1)
+
+//Draw indicators circles
+//Early Cross, ema55 cross to ema 100
+plot(cross(ema55, ema100) ? ema100 : na, style=circles, linewidth = 4, color=#f92cd7, title="Early Cross")
+//Golden Cross, ema 55 cross to ema200
+plot(cross(ema55, ema200) ? ema200 : na, style=circles, linewidth = 4, color=#ff5be9, title="Golden Cross")

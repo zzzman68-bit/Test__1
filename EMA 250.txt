@@ -1,0 +1,17 @@
+//@version=3
+// created by melihguler
+
+study("Multiple Ema 20/50/100", overlay=true)
+
+len1=input(20, title="Vade 1")
+len2=input(50, title="Vade 2")
+len3=input(100, title="Vade 3")
+
+
+M1=ema(close, len1)
+M2=ema(close, len2)
+M3=ema(close, len3)
+
+plot(M1, color=green, linewidth=2)
+plot(M2, color=orange, linewidth=2)
+plot(M3, color=red, linewidth=2)

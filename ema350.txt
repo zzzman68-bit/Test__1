@@ -1,0 +1,353 @@
+//@version=5
+// @EZ_Algo 
+// x.com/EZ_Algo 
+
+// Ema Crossover Alerts are setup with Ema 1 & Ema 2 
+indicator(title='EZ Algo Ema Suite', overlay=true)
+
+// --- Theme Settings
+input_group_general = "🟢══════════  Theme Settings  ══════════🔴"
+input_theme = input.string("Off", "Sync EMA Colors", options=["Custom", "Off"], group=input_group_general)
+Custombull = input.color(color.green, "Custom Bull Color", group=input_group_general)
+Custombear = input.color(color.red, "Custom Bear Color", group=input_group_general)
+
+// --- Inputs
+emagroup = "🟢══════════  EZ ALGO EMA SUITE  ══════════🔴"
+source = close
+
+turnon = input(true, title='Show Ema 1 & 2', inline="1", group=emagroup)
+turnon2 = input(false, title='Display Crosses', inline="1", group=emagroup)
+bullfill = input(color.rgb(0, 254, 8, 64),title="Fill", inline="5", group=emagroup)
+bearfill = input(#ff00005f,title="", inline="5", group=emagroup)
+
+colorbars = input(true, title="Color Bars?", inline="2", group=emagroup)
+barcolorbull = input(color.rgb(2, 234, 9), "", inline="2", group=emagroup)
+barcolorbear = input(color.rgb(255, 0, 0), "", inline="2", group=emagroup)
+colorbars2 = input(true, title="Color Bar when price closes above / under Ema 1 & 2", inline="3", group=emagroup)
+backgroundcolor = input(false, title='Background Color', inline="4", group=emagroup)
+bacgroundcolorbull = input(#00ff081c, "", inline="4", group=emagroup)
+backgroundcolorbear = input(#ff00001c, "", inline="4", group=emagroup)
+barc1 = input(color.rgb(0, 38, 255), "", inline="3", group=emagroup)
+barc2 = input(color.orange, "", inline="3", group=emagroup)
+
+emagroup2 = "🟢══════════  EMA Cross Inputs  ══════════🔴"
+len1 = input.int(9, minval=1, title='EMA1')
+len2 = input.int(55, minval=1, title='EMA2')
+
+// EMA 1 & 2 display with color sync
+ema1 = ta.ema(source, len1)
+ema2 = ta.ema(source, len2)
+ema1_color = input_theme == "Custom" ? (ema1 > ema2 ? Custombull : Custombear) : bacgroundcolorbull
+ema2_color = input_theme == "Custom" ? (ema1 > ema2 ? Custombull : Custombear) : backgroundcolorbear
+F1 = plot(turnon ? ema1 : na, color=ema1_color, linewidth=2)
+S2 = plot(turnon ? ema2 : na, color=ema2_color, linewidth=2)
+fill(F1, S2, title='Channel Fill', color=ema1 > ema2 ? bullfill : bearfill)
+
+// -- Condition 
+cond1 = ta.crossover(close, ema1) and ta.crossover(close, ema2)
+cond2 = ta.crossunder(close, ema1) and ta.crossunder(close, ema2)
+
+barcolor(cond1 ? barc1 : cond2 ? barc2 : na)
+
+// Ema Cross logic
+mylong = ta.crossover(ema1, ema2)
+myshort = ta.crossunder(ema1, ema2)
+
+first = ta.ema(close, len1)
+sec = ta.ema(close, len2)
+
+last_long = float(na)
+last_short = float(na)
+last_long := mylong ? time : nz(last_long[1])
+last_short := myshort ? time : nz(last_short[1])
+
+in_long = last_long > last_short ? 2 : 0
+in_short = last_short > last_long ? 2 : 0
+
+condlongx = in_long
+condlong = ta.crossover(condlongx, 1.9)
+condlongclose = ta.crossunder(condlongx, 1.9)
+
+condshortx = in_short
+condshort = ta.crossover(condshortx, 1.9)
+condshortclose = ta.crossover(condshortx, 1.9)
+
+// Plots
+plotshape(turnon2 ? condlong : na, title='Breakout', color=#0ca726, location=location.belowbar, style=shape.triangleup, text='', textcolor=color.new(color.white, 0), size=size.normal, offset=1)
+plotshape(turnon2 ? condshort : na, title='Breakdown', color=color.new(#9d0d0d, 0), style=shape.triangledown, text='', textcolor=color.new(color.white, 0), size=size.normal, offset=1)
+
+// -- Candle Color
+colbar = ema1 > ema2 ? barcolorbull : barcolorbear 
+barcolor(colorbars ? colbar : na)
+
+// Custom EMAs with color sync
+emagroup3 = "🟢══════════  Custom EMA Inputs  ══════════🔴"
+
+// Ema 3
+turnon3 = input(true, title='', inline="3", group=emagroup3)
+len3 = input.int(5, minval=1, title='EMA3', inline="3", group=emagroup3)
+color3 = input(color.blue, title="", inline="3", group=emagroup3)
+ema3 = ta.ema(source, len3)
+plot(turnon3 ? ema3 : na, 'Ema 3', style=plot.style_line, linewidth=2, color=input_theme == "Custom" ? Custombull : color3)
+
+// Ema 4
+turnon4 = input(true, title='', inline="4", group=emagroup3)
+len4 = input.int(8, minval=1, title='EMA4', inline="4", group=emagroup3)
+color4 = input(color.orange, title="", inline="4", group=emagroup3)
+ema4 = ta.ema(source, len4)
+plot(turnon4 ? ema4 : na, 'Ema 4', style=plot.style_line, linewidth=2, color=input_theme == "Custom" ? Custombull : color4)
+
+// Ema 5
+turnon5 = input(true, title='', inline="5", group=emagroup3)
+len5 = input.int(34, minval=1, title='EMA5', inline="5", group=emagroup3)
+color5 = input(color.yellow, title="", inline="5", group=emagroup3)
+ema5 = ta.ema(source, len5)
+plot(turnon5 ? ema5 : na, 'Ema 5', style=plot.style_line, linewidth=2, color=input_theme == "Custom" ? Custombull : color5)
+
+// Ema 6
+turnon6 = input(true, title='', inline="6", group=emagroup3)
+len6 = input.int(55, minval=1, title='EMA6', inline="6", group=emagroup3)
+color6 = input(color.purple, title="", inline="6", group=emagroup3)
+ema6 = ta.ema(source, len6)
+plot(turnon6 ? ema6 : na, 'Ema 6', style=plot.style_line, linewidth=2, color=input_theme == "Custom" ? Custombull : color6)
+
+// Ema 7
+turnon7 = input(true, title='', inline="7", group=emagroup3)
+len7 = input.int(89, minval=1, title='EMA7', inline="7", group=emagroup3)
+color7 = input(color.fuchsia, title="", inline="7", group=emagroup3)
+ema7 = ta.ema(source, len7)
+plot(turnon7 ? ema7 : na, 'Ema 7', style=plot.style_line, linewidth=2, color=input_theme == "Custom" ? Custombull : color7)
+
+// Ema 8
+turnon8 = input(true, title='', inline="8", group=emagroup3)
+len8 = input.int(144, minval=1, title='EMA8', inline="8", group=emagroup3)
+color8 = input(color.teal, title="", inline="8", group=emagroup3)
+ema8 = ta.ema(source, len8)
+plot(turnon8 ? ema8 : na, 'Ema 8', style=plot.style_line, linewidth=2, color=input_theme == "Custom" ? Custombull : color8)
+
+// Ema 9
+turnon9 = input(true, title='', inline="9", group=emagroup3)
+len9 = input.int(200, minval=1, title='EMA9', inline="9", group=emagroup3)
+color9 = input(#2a047b, title="", inline="9", group=emagroup3)
+ema9 = ta.ema(source, len9)
+plot(turnon9 ? ema9 : na, 'Ema 9', style=plot.style_line, linewidth=2, color=input_theme == "Custom" ? Custombull : color9)
+
+// Alert Settings
+alertgroup = "🟢══════════  Alert Settings  ══════════🔴"
+
+any_ema_alert_switch1 = input.bool(false, "Custom Alert 1", group=alertgroup)
+ema1_ema2_alert = input.string("Crossover", "EMA 1 over EMA 2 Alert", options=["Crossover", "Crossunder"], group=alertgroup)
+
+alertgroup2 = "Price Closing Above or Below Any Ema"
+any_ema_alert_switch = input.bool(false, "Custom Alert 2", group=alertgroup2)
+any_ema_source = input.string("Close", "Source", options=["Close", "EMA 1", "EMA 2", "EMA 3", "EMA 4", "EMA 5", "EMA 6", "EMA 7", "EMA 8", "EMA 9"], group=alertgroup2)
+any_ema_direction = input.string("Crossover", "Direction", options=["Crossover", "Crossunder"], group=alertgroup2)
+
+alertgroup3 = "Any Ema Crossover or Crossunder"
+alert3_switch = input.bool(false, "Custom Alert 3", group=alertgroup)
+alert3_source2 = input.string("EMA 1", "Source 2", options=["EMA 1", "EMA 2", "EMA 3", "EMA 4", "EMA 5", "EMA 6", "EMA 7", "EMA 8", "EMA 9"], group=alertgroup3)
+alert3_source3 = input.string("EMA 2", "Source 3", options=["EMA 1", "EMA 2", "EMA 3", "EMA 4", "EMA 5", "EMA 6", "EMA 7", "EMA 8", "EMA 9"], group=alertgroup3)
+alert3_direction = input.string("Crossover", "Direction", options=["Crossover", "Crossunder"], group=alertgroup3)
+
+// EMA 1 vs EMA 2 Conditions
+ema1_ema2_crossover = any_ema_alert_switch1 and ta.crossover(ema1, ema2)
+ema1_ema2_crossunder = any_ema_alert_switch1 and ta.crossunder(ema1, ema2)
+
+// Alert Conditions with Placeholders
+alertcondition(ema1_ema2_alert == "Crossover" ? ema1_ema2_crossover : na, title="EMA 1 Crossover EMA 2", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, EMA 1 crossed over EMA 2")
+alertcondition(ema1_ema2_alert == "Crossunder" ? ema1_ema2_crossunder : na, title="EMA 1 Crossunder EMA 2", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, EMA 1 crossed under EMA 2")
+alertcondition(cond1, title="Price Above EMA 1 & 2", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, Price rose above EMA 1 & EMA 2")
+alertcondition(cond2, title="Price Below EMA 1 & 2", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, Price closed below EMA 1 & EMA 2")
+alertcondition(condlong, title="Breakout", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, Breakout")
+alertcondition(condshort, title="Breakdown", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, Breakdown")
+
+// Any EMA Alert
+source_value = any_ema_source == "Close" ? close :
+               any_ema_source == "EMA 1" ? ema1 :
+               any_ema_source == "EMA 2" ? ema2 :
+               any_ema_source == "EMA 3" ? ema3 :
+               any_ema_source == "EMA 4" ? ema4 :
+               any_ema_source == "EMA 5" ? ema5 :
+               any_ema_source == "EMA 6" ? ema6 :
+               any_ema_source == "EMA 7" ? ema7 :
+               any_ema_source == "EMA 8" ? ema8 :
+               ema9
+
+// Conditions for each EMA against the selected source
+cross_ema1 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema1) : ta.crossunder(source_value, ema1)
+cross_ema2 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema2) : ta.crossunder(source_value, ema2)
+cross_ema3 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema3) : ta.crossunder(source_value, ema3)
+cross_ema4 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema4) : ta.crossunder(source_value, ema4)
+cross_ema5 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema5) : ta.crossunder(source_value, ema5)
+cross_ema6 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema6) : ta.crossunder(source_value, ema6)
+cross_ema7 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema7) : ta.crossunder(source_value, ema7)
+cross_ema8 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema8) : ta.crossunder(source_value, ema8)
+cross_ema9 = any_ema_direction == "Crossover" ? ta.crossover(source_value, ema9) : ta.crossunder(source_value, ema9)
+
+// Any EMA alert condition
+any_ema_condition = any_ema_alert_switch and (cross_ema1 or cross_ema2 or cross_ema3 or cross_ema4 or cross_ema5 or cross_ema6 or cross_ema7 or cross_ema8 or cross_ema9)
+
+alertcondition(any_ema_condition, title="Any EMA Alert", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, Any EMA crossed")
+
+// Alert 3 Logic
+source2_value = alert3_source2 == "EMA 1" ? ema1 :alert3_source2 == "EMA 2" ? ema2 :alert3_source2 == "EMA 3" ? ema3 :alert3_source2 == "EMA 4" ? ema4 :alert3_source2 == "EMA 5" ? ema5 :alert3_source2 == "EMA 6" ? ema6 :alert3_source2 == "EMA 7" ? ema7 :alert3_source2 == "EMA 8" ? ema8 :ema9
+
+source3_value = alert3_source3 == "EMA 1" ? ema1 :  alert3_source3 == "EMA 2" ? ema2 :  alert3_source3 == "EMA 3" ? ema3 :  alert3_source3 == "EMA 4" ? ema4 :  alert3_source3 == "EMA 5" ? ema5 :  alert3_source3 == "EMA 6" ? ema6 :  alert3_source3 == "EMA 7" ? ema7 :  alert3_source3 == "EMA 8" ? ema8 : ema9
+
+alert3_crossover = ta.crossover(source2_value, source3_value)
+alert3_crossunder = ta.crossunder(source2_value, source3_value)
+
+alertcondition(alert3_switch and alert3_direction == "Crossover" ? alert3_crossover : na, title="Alert 3 Crossover", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, Source 2 crossed over Source 3")
+alertcondition(alert3_switch and alert3_direction == "Crossunder" ? alert3_crossunder : na, title="Alert 3 Crossunder", message="{{exchange}}:{{ticker}}, Chart Timeframe = {{interval}}, Time = {{timenow}}, Source 2 crossed under Source 3")
+
+// Background Color
+bgcolor(backgroundcolor ? (ema1 > ema2 ? bacgroundcolorbull : backgroundcolorbear) : na)
+
+// Dashboard settings
+emadashboard2 = "🟢══════════  MTF Dashboard 🤖  ══════════🔴"
+show_dashboard = input.bool(defval=true, title='Display Ema Dashboard', inline="5", group=emadashboard2)
+tablePosition = input.string(title='Dashboard Position?', defval=position.top_right, options=[position.bottom_left, position.top_left, position.bottom_right, position.top_right], group=emadashboard2, tooltip="Allows you to change the position of the dashboard on the chart.")
+tableTextSize = input.string(title='Size?', inline="5", defval=size.small, options=[size.auto, size.tiny, size.small, size.normal, size.large, size.huge], group=emadashboard2, tooltip="Use Tiny if on Mobile, Use Small if on Web browser.")
+
+// Dashboard EMA Inputs
+emadashboard3 = "🟢══════════  MTF Dashboard Inputs 🤖  ══════════🔴"
+ema1_len = input.int(9, "EMA 1 Length", minval=1, group=emadashboard3)
+ema2_len = input.int(21, "EMA 2 Length", minval=1, group=emadashboard3)
+ema3_len = input.int(50, "EMA 3 Length", minval=1, group=emadashboard3)
+ema4_len = input.int(89, "EMA 4 Length", minval=1, group=emadashboard3)
+ema5_len = input.int(100, "EMA 5 Length", minval=1, group=emadashboard3)
+ema6_len = input.int(200, "EMA 6 Length", minval=1, group=emadashboard3)
+
+// Dashboard Color settings
+bull_color = input.color(#1bbf21, "Bullish Color")
+bear_color = input.color(#ff0000, "Bearish Color")
+text_color = input.color(color.rgb(255, 255, 255), "Text Color")
+border_color = input.color(#000000, "Border Color")
+bg_color = input.color(#00000084, "Background Color")
+
+// Function to get EMA and compare with price
+get_ema_status(tf, length) =>
+    ema_val = request.security("", tf, ta.ema(close, length))
+    close > ema_val
+
+// Calculate status for each timeframe and EMA
+// Current Timeframe
+ctf_ema1 = get_ema_status("", ema1_len)
+ctf_ema2 = get_ema_status("", ema2_len)
+ctf_ema3 = get_ema_status("", ema3_len)
+ctf_ema4 = get_ema_status("", ema4_len)
+ctf_ema5 = get_ema_status("", ema5_len)
+ctf_ema6 = get_ema_status("", ema6_len)
+
+// 1 Hour (60 minutes)
+h1_ema1 = get_ema_status("60", ema1_len)
+h1_ema2 = get_ema_status("60", ema2_len)
+h1_ema3 = get_ema_status("60", ema3_len)
+h1_ema4 = get_ema_status("60", ema4_len)
+h1_ema5 = get_ema_status("60", ema5_len)
+h1_ema6 = get_ema_status("60", ema6_len)
+
+// 4 Hour (240 minutes)
+h4_ema1 = get_ema_status("240", ema1_len)
+h4_ema2 = get_ema_status("240", ema2_len)
+h4_ema3 = get_ema_status("240", ema3_len)
+h4_ema4 = get_ema_status("240", ema4_len)
+h4_ema5 = get_ema_status("240", ema5_len)
+h4_ema6 = get_ema_status("240", ema6_len)
+
+// 12 Hour (720 minutes)
+h12_ema1 = get_ema_status("720", ema1_len)
+h12_ema2 = get_ema_status("720", ema2_len)
+h12_ema3 = get_ema_status("720", ema3_len)
+h12_ema4 = get_ema_status("720", ema4_len)
+h12_ema5 = get_ema_status("720", ema5_len)
+h12_ema6 = get_ema_status("720", ema6_len)
+
+// 1 Day
+d1_ema1 = get_ema_status("D", ema1_len)
+d1_ema2 = get_ema_status("D", ema2_len)
+d1_ema3 = get_ema_status("D", ema3_len)
+d1_ema4 = get_ema_status("D", ema4_len)
+d1_ema5 = get_ema_status("D", ema5_len)
+d1_ema6 = get_ema_status("D", ema6_len)
+
+// 1 Week
+w1_ema1 = get_ema_status("W", ema1_len)
+w1_ema2 = get_ema_status("W", ema2_len)
+w1_ema3 = get_ema_status("W", ema3_len)
+w1_ema4 = get_ema_status("W", ema4_len)
+w1_ema5 = get_ema_status("W", ema5_len)
+w1_ema6 = get_ema_status("W", ema6_len)
+
+// Dashboard display
+if show_dashboard
+    var table dashboard = table.new(tablePosition, 7, 7, border_width=1, border_color=border_color, bgcolor=bg_color)
+    
+    // Header row
+    table.cell(dashboard, 0, 0, "EMA", text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 1, 0, "CTF", text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 2, 0, "1HR", text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 3, 0, "4HR", text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 4, 0, "12HR", text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 5, 0, "1D", text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 6, 0, "1WK", text_color=text_color, text_size=tableTextSize)
+    
+    // EMA 9 row
+    table.cell(dashboard, 0, 1, str.tostring(ema1_len), text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 1, 1, "", bgcolor=ctf_ema1 ? bull_color : bear_color)
+    table.cell(dashboard, 2, 1, "", bgcolor=h1_ema1 ? bull_color : bear_color)
+    table.cell(dashboard, 3, 1, "", bgcolor=h4_ema1 ? bull_color : bear_color)
+    table.cell(dashboard, 4, 1, "", bgcolor=h12_ema1 ? bull_color : bear_color)
+    table.cell(dashboard, 5, 1, "", bgcolor=d1_ema1 ? bull_color : bear_color)
+    table.cell(dashboard, 6, 1, "", bgcolor=w1_ema1 ? bull_color : bear_color)
+    
+    // EMA 21 row
+    table.cell(dashboard, 0, 2, str.tostring(ema2_len), text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 1, 2, "", bgcolor=ctf_ema2 ? bull_color : bear_color)
+    table.cell(dashboard, 2, 2, "", bgcolor=h1_ema2 ? bull_color : bear_color)
+    table.cell(dashboard, 3, 2, "", bgcolor=h4_ema2 ? bull_color : bear_color)
+    table.cell(dashboard, 4, 2, "", bgcolor=h12_ema2 ? bull_color : bear_color)
+    table.cell(dashboard, 5, 2, "", bgcolor=d1_ema2 ? bull_color : bear_color)
+    table.cell(dashboard, 6, 2, "", bgcolor=w1_ema2 ? bull_color : bear_color)
+    
+    // EMA 50 row
+    table.cell(dashboard, 0, 3, str.tostring(ema3_len), text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 1, 3, "", bgcolor=ctf_ema3 ? bull_color : bear_color)
+    table.cell(dashboard, 2, 3, "", bgcolor=h1_ema3 ? bull_color : bear_color)
+    table.cell(dashboard, 3, 3, "", bgcolor=h4_ema3 ? bull_color : bear_color)
+    table.cell(dashboard, 4, 3, "", bgcolor=h12_ema3 ? bull_color : bear_color)
+    table.cell(dashboard, 5, 3, "", bgcolor=d1_ema3 ? bull_color : bear_color)
+    table.cell(dashboard, 6, 3, "", bgcolor=w1_ema3 ? bull_color : bear_color)
+    
+    // EMA 89 row
+    table.cell(dashboard, 0, 4, str.tostring(ema4_len), text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 1, 4, "", bgcolor=ctf_ema4 ? bull_color : bear_color)
+    table.cell(dashboard, 2, 4, "", bgcolor=h1_ema4 ? bull_color : bear_color)
+    table.cell(dashboard, 3, 4, "", bgcolor=h4_ema4 ? bull_color : bear_color)
+    table.cell(dashboard, 4, 4, "", bgcolor=h12_ema4 ? bull_color : bear_color)
+    table.cell(dashboard, 5, 4, "", bgcolor=d1_ema4 ? bull_color : bear_color)
+    table.cell(dashboard, 6, 4, "", bgcolor=w1_ema4 ? bull_color : bear_color)
+    
+    // EMA 100 row
+    table.cell(dashboard, 0, 5, str.tostring(ema5_len), text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 1, 5, "", bgcolor=ctf_ema5 ? bull_color : bear_color)
+    table.cell(dashboard, 2, 5, "", bgcolor=h1_ema5 ? bull_color : bear_color)
+    table.cell(dashboard, 3, 5, "", bgcolor=h4_ema5 ? bull_color : bear_color)
+    table.cell(dashboard, 4, 5, "", bgcolor=h12_ema5 ? bull_color : bear_color)
+    table.cell(dashboard, 5, 5, "", bgcolor=d1_ema5 ? bull_color : bear_color)
+    table.cell(dashboard, 6, 5, "", bgcolor=w1_ema5 ? bull_color : bear_color)
+    
+    // EMA 200 row
+    table.cell(dashboard, 0, 6, str.tostring(ema6_len), text_color=text_color, text_size=tableTextSize)
+    table.cell(dashboard, 1, 6, "", bgcolor=ctf_ema6 ? bull_color : bear_color)
+    table.cell(dashboard, 2, 6, "", bgcolor=h1_ema6 ? bull_color : bear_color)
+    table.cell(dashboard, 3, 6, "", bgcolor=h4_ema6 ? bull_color : bear_color)
+    table.cell(dashboard, 4, 6, "", bgcolor=h12_ema6 ? bull_color : bear_color)
+    table.cell(dashboard, 5, 6, "", bgcolor=d1_ema6 ? bull_color : bear_color)
+    table.cell(dashboard, 6, 6, "", bgcolor=w1_ema6 ? bull_color : bear_color)
+
+if barstate.isfirst
+    var table errorBox = table.new(position.bottom_right, 1, 1, bgcolor=color.new(#363a45, 100))
+    table.cell(errorBox, 0, 0, "©EZ_ALGO", text_color=color.gray, text_halign=text.align_center, text_size=size.normal)
+
+// End

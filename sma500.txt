@@ -1,0 +1,4 @@
+//@version=3
+study("200 Day", overlay=true)
+d200_sma = security(tickerid, 'D', sma(close, 200))
+plot(d200_sma)
