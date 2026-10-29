@@ -472,6 +472,8 @@ ehma50  __T.MIN  color val_9_color_default = #82FFC9
 [ML Prediction(smoothed) ]  __B-Max  __Upper6  color val_9_color_default = #82FFC9
 Volumatic Trend 46 __B-Min   color val_9_color_default = #82FFC9
 Volumatic Trend 50 __B-Min  color val_9_color_default = #82FFC9
+(volumatic Trend 53 __B-min) [Ehma47 __L3 upper outer] color val_9_color_default = #82FFC9
+(volumatic Trend 53 __B-min) [Ehma47 __L3 upper outer] color val_9_color_default = #82FFC9
 (_funcCalcMA(valFinal_10_MaType, input_10_Source, input_10_Timeframe, valFinal_10_MaLength), title='MA 10', color=color.new(input_10_color, 
 
 
