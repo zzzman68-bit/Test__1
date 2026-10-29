@@ -557,6 +557,8 @@ sma100  2d, 3d color val_9_color_default = #82FFC9
 (Rolling windows 400)  __(Upper6)   color val_9_color_default = #82FFC9
 (Rolling windows 250-Middle) ___(Upper6)   color val_9_color_default = #82FFC9
 (Rolling windows 250-Middle) ___(Upper5)   color val_9_color_default = #82FFC9
+[SMA x 1.618] __Price color val_9_color_default = #82FFC9
+[SMA x 1.618] __Price color val_9_color_default = #82FFC9
 color input_8_color = input(title='Style: Color', group='Field 8', defval=val_8_color_default)
 color=color.new(input_10_color, input_10_LineTransparency), linewidth=input_10_LineWidth, style=_funcLineStyle(input_10_LineStyle))
 
@@ -616,6 +618,9 @@ chadelier exit  color val_9_color_default = #82FFC9
 T3 Entry and Exit by stocktrader15 color val_9_color_default = #82FFC9
 B-Min __-0.618r1  val_9_color_default = #82FFC9
 B-Min __hma200  val_9_color_default = #82FFC9
+t350 __"+03" 1hr/4hr/ val_9_color_default = #82FFC9
+t500 __"+03" 1hr/4hr/ val_9_color_default = #82FFC9
+t690 __UPPER 100 1hr/4hr/ val_9_color_default = #82FFC9
 color input_8_color = input(title='Style: Color', group='Field 8', defval=val_8_color_default)
 color=color.new(input_10_color, input_10_LineTransparency), linewidth=input_10_LineWidth, style=_funcLineStyle(input_10_LineStyle))
 
